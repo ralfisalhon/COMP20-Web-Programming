@@ -3,14 +3,14 @@
 body {
 	background-color: #1E90FF;
 	font-family: "Avenir Next";
-	font-size: 98px;
-	color: yellow;
+	font-size: 16px;
+	color: white;
 }
 
 h1, h2, h3, p {
 	text-align: left;
-	color: yellow;
-	background-color: magenta;
+	/*color: yellow;
+	background-color: magenta;*/
 }
 
 .bold-title {

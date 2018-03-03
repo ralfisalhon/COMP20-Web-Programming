@@ -43,9 +43,6 @@
 					for (count = 0; count < passengersLength; count++) {
 						currentPassenger = passengersOBJ.passengers[count];
 						outputString += "<p>passenger: " + currentPassenger.username + " - lat, lng: " + currentPassenger.lat + ", " + currentPassenger.lng + "</p>";
-
-						// currentPassenger = passengersOBJ.passengers[count];
-						// outputString += "<p>username: " + currentPassenger.username + "lat, lng: " + currentPassenger.lat + "," + currentPassenger.lng "</p>";
 					}
 
 					outputDiv.innerHTML = outputString;
@@ -58,7 +55,7 @@
 </head>
 
 <body onload="getLocation()">
-	<h1>Where Am I</h1>
+	<h1>List of Passengers:</h1>
 	<div id="location">Fetching passengers...</div>
 </body>
 </html>
