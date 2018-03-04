@@ -3,12 +3,13 @@
 body {
 	background-color: #1E90FF;
 	font-family: "Avenir Next";
-	font-size: 16px;
+	font-size: 24px;
 	color: white;
 }
 
-h1, h2, h3, p {
+h2, p {
 	text-align: left;
+	color: black;
 	/*color: yellow;
 	background-color: magenta;*/
 }

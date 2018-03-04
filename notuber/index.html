@@ -59,7 +59,7 @@
 
     <script>
     	function initMap() {
-    		var myLatLng = {lat: myLat, lng: myLng};
+    		myLatLng = new google.maps.LatLng({lat: parseFloat(myLat), lng: parseFloat(myLng)});
     		var map = new google.maps.Map(document.getElementById('map'), {
     			zoom: 15, 
     			center: myLatLng
@@ -76,19 +76,35 @@
 			});
 
 			for (count = 0; count < passengersLength; count++) {
-				currentPassenger = passengersOBJ.passengers[count];
-				var LatLng = {lat: currentPassenger.lat, lng: currentPassenger.lng};
+				var currentPassenger = passengersOBJ.passengers[count];
+				LatLng = new google.maps.LatLng({lat: parseFloat(currentPassenger.lat), lng: parseFloat(currentPassenger.lng)});
+				var distance = google.maps.geometry.spherical.computeDistanceBetween(LatLng, myLatLng);
+
+				distance *= 0.000621371;
+
+				var contentString = "<p>" + currentPassenger.username + "</p><p>" + distance + "</p>";
+				var infowindow = new google.maps.InfoWindow({
+          			content: contentString
+          		});
+
 				marker = new google.maps.Marker({
 					position: LatLng,
 					map: map,
 					title: 'Passenger: ' + currentPassenger.username,
 					icon: passengerImage
 				});
+
+				google.maps.event.addListener(marker,'click', (function(marker,contentString,infowindow){ 
+				    return function() {
+				        infowindow.setContent(contentString);
+				        infowindow.open(map,marker);
+				    };
+				})(marker,contentString,infowindow));  
 			}
 		}
 
 	</script>
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAYrcAVox7Xw0tbbKSe4VJdjX-kG3WAgv8&callback=initMap"
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAYrcAVox7Xw0tbbKSe4VJdjX-kG3WAgv8&libraries=geometry"
     async defer></script>
 
 </head>
