@@ -33,29 +33,67 @@
 			//Call a function when the state changes.
 			request.onreadystatechange = function() {
 				if(request.readyState == 4 && request.status == 200) {
-					outputDiv = document.getElementById("location");
 					
 					theString = request.responseText;
 					passengersOBJ = JSON.parse(theString);
 					passengersLength = passengersOBJ['passengers'].length;
 					
-					outputString = "";
-					for (count = 0; count < passengersLength; count++) {
-						currentPassenger = passengersOBJ.passengers[count];
-						outputString += "<p>passenger: " + currentPassenger.username + " - lat, lng: " + currentPassenger.lat + ", " + currentPassenger.lng + "</p>";
-					}
-
-					outputDiv.innerHTML = outputString;
+					initMap();
 				}
 			}
 
 			request.send(params);
 		}
 	</script>
+
+	<style>
+	#map {
+		height: 100%;
+	}
+	html, body {
+		height: 100%;
+		margin: 0;
+		padding: 0;
+	}
+    </style>
+
+    <script>
+    	function initMap() {
+    		var myLatLng = {lat: myLat, lng: myLng};
+    		var map = new google.maps.Map(document.getElementById('map'), {
+    			zoom: 15, 
+    			center: myLatLng
+    		});
+
+    		var vehicleImage = 'images/car.png'
+    		var passengerImage = 'images/passenger.png'
+
+			var marker = new google.maps.Marker({
+				position: myLatLng,
+				map: map,
+				title: 'The Vehicle',
+				icon: vehicleImage
+			});
+
+			for (count = 0; count < passengersLength; count++) {
+				currentPassenger = passengersOBJ.passengers[count];
+				var LatLng = {lat: currentPassenger.lat, lng: currentPassenger.lng};
+				marker = new google.maps.Marker({
+					position: LatLng,
+					map: map,
+					title: 'Passenger: ' + currentPassenger.username,
+					icon: passengerImage
+				});
+			}
+		}
+
+	</script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAYrcAVox7Xw0tbbKSe4VJdjX-kG3WAgv8&callback=initMap"
+    async defer></script>
+
 </head>
 
 <body onload="getLocation()">
-	<h1>List of Passengers:</h1>
-	<div id="location">Fetching passengers...</div>
+	<div id="map"><h1>Please wait...</h1></div>
 </body>
 </html>
