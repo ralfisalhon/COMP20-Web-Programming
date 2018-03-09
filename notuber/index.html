@@ -33,10 +33,14 @@
 			//Call a function when the state changes.
 			request.onreadystatechange = function() {
 				if(request.readyState == 4 && request.status == 200) {
-					
 					theString = request.responseText;
-					passengersOBJ = JSON.parse(theString);
-					passengersLength = passengersOBJ['passengers'].length;
+					theOBJ = JSON.parse(theString);
+					if (theOBJ.hasOwnProperty("vehicles")) {
+						arrayLength = theOBJ['vehicles'].length;
+					}
+					else {
+						arrayLength = theOBJ['passengers'].length;
+					}
 					
 					initMap();
 				}
@@ -46,17 +50,6 @@
 		}
 	</script>
 
-	<style>
-	#map {
-		height: 100%;
-	}
-	html, body {
-		height: 100%;
-		margin: 0;
-		padding: 0;
-	}
-    </style>
-
     <script>
     	function initMap() {
     		myLatLng = new google.maps.LatLng({lat: parseFloat(myLat), lng: parseFloat(myLng)});
@@ -65,18 +58,28 @@
     			center: myLatLng
     		});
 
-    		var vehicleImage = 'images/car.png'
-    		var passengerImage = 'images/passenger.png'
+    		if (theOBJ.hasOwnProperty("vehicles")) {
+    			var otherImage = 'images/car.png'
+    			var myImage = 'images/passenger.png'
+    		}
+    		else {
+    			var myImage = 'images/car.png'
+    			var otherImage = 'images/passenger.png'
+    		}
 
 			var marker = new google.maps.Marker({
 				position: myLatLng,
 				map: map,
 				title: 'The Vehicle',
-				icon: vehicleImage
+				icon: myImage
 			});
 
-			for (count = 0; count < passengersLength; count++) {
-				var currentPassenger = passengersOBJ.passengers[count];
+			for (count = 0; count < arrayLength; count++) {
+				if (theOBJ.hasOwnProperty("vehicles"))
+					var currentPassenger = theOBJ.vehicles[count];
+				else
+					var currentPassenger = theOBJ.passengers[count];
+				
 				LatLng = new google.maps.LatLng({lat: parseFloat(currentPassenger.lat), lng: parseFloat(currentPassenger.lng)});
 				var distance = google.maps.geometry.spherical.computeDistanceBetween(LatLng, myLatLng);
 
@@ -91,7 +94,7 @@
 					position: LatLng,
 					map: map,
 					title: 'Passenger: ' + currentPassenger.username,
-					icon: passengerImage
+					icon: otherImage
 				});
 
 				google.maps.event.addListener(marker,'click', (function(marker,contentString,infowindow){ 
