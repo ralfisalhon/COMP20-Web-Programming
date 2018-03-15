@@ -1,0 +1,28 @@
+/* This is a style sheet */
+
+body {
+	background-color: #1E90FF;
+	font-family: "Avenir Next";
+	font-size: 24px;
+	color: white;
+}
+
+h2, p {
+	text-align: left;
+	color: black;
+	/*color: yellow;
+	background-color: magenta;*/
+}
+
+.bold-title {
+	font-weight: bold;
+}
+
+#map {
+	height: 100%;
+}
+html, body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
