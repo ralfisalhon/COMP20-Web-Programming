@@ -8,7 +8,30 @@
     <link rel="stylesheet" href="style.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script>
-        // Your work will be done here...
+        $(document).ready(function() {
+        	var storage = localStorage.getItem("logs");
+
+        	if (storage != null)
+        		$("#log").html(storage);
+
+        	$("#msg").keyup(function(key) {
+        		if (key.keyCode == 13) {
+        			var displayData = "<p>" + Date() + " - " + $("#msg").val() + "</p>";
+        			$("#msg").val("");
+
+        			if (displayData.indexOf("<script>") != -1)
+        				return;
+
+        			if (storage != null)
+        				displayData += storage;
+
+        			storage = displayData;
+        			localStorage.setItem("logs", displayData);
+
+        			$("#log").html(displayData);
+        		}
+        	});
+        });
     </script>
 </head>
 
