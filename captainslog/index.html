@@ -11,23 +11,27 @@
         $(document).ready(function() {
         	var storage = localStorage.getItem("logs");
 
+        	// if anything is stored, display it
         	if (storage != null)
         		$("#log").html(storage);
 
         	$("#msg").keyup(function(key) {
         		if (key.keyCode == 13) {
+        			// put the displayed message in a <p>
         			var displayData = "<p>" + Date() + " - " + $("#msg").val() + "</p>";
+        			
+        			// Clear the input box
         			$("#msg").val("");
 
-        			if (displayData.indexOf("<script>") != -1)
-        				return;
-
+        			// add storage to displayData if it isn't null
         			if (storage != null)
         				displayData += storage;
 
+        			// do localStorage stuff
         			storage = displayData;
         			localStorage.setItem("logs", displayData);
 
+        			// display it now
         			$("#log").html(displayData);
         		}
         	});
