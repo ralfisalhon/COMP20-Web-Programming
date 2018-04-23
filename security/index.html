@@ -1,3 +1,18 @@
+<!-- 
+Introduction - Provide a description of the product and what you were hired to do
+Methodology - Describe your methodology pen testing the application, including the tools that you used
+Abstract of Findings - Provide an overview of all the security and privacy issues you identified. This section should be written for non-technical managers who do not have technical expertise and do not have time to read the entire document. Write this section using lay language.
+Issues Found - For each issue that you find, document:
+	Issue (e.g., database injection, really bad programming practice)
+	Location or page where issue was found
+	Severity of issue (e.g., low, medium , or high). Justify your answer.
+	Description of issue. How did you find it? A screenshot of problem is excellent.
+	Proof of vulnerability. Show pictures or it didn't happen.
+	Resolution. Make recommendation(s) on how issue can be resolved. Show code if possible.
+Conclusion - You can also list future considerations and recommendations with costs.
+References - A list of references and links that you used for your work. 
+-->
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,7 +22,27 @@
 </head>
 
 <body>
-	<h1>Security Report:</h1>
-	<p>BLAH</p>
+	<h1>Introduction</h1>
+	<p>Hi, my name is Ralfi. I was hired as a security consultant to document and resolve the security and privacy issues in the application <em>https://afternoon-dusk-64785.herokuapp.com/</em> by <em>Nimish Adhikari</em>. It bothers me to say that this application was riddled with security and privacy vulnerabilities. I have documented my findings below.</p>
+
+	<h1>Methodology</h1>
+	<p>To conduct my tests, I have used the curl tool from my terminal. Below is an example of a sample input that would work in the given application:</p>
+	<p>curl --data "username=USERNAME_HERE&lat=LAT_HERE&lng=LNG_HERE" https://afternoon-dusk-64785.herokuapp.com/rides</p>
+	<p>I have noticed that the username tag could be easily exploited, as the input was not sanitized and not parsed. I discovered many vulnerabilities from the username tag alone, and those will be the only vulnerabilities discussed in this assessment, but expect that this application has many more problems than those listed below. </p>
+	
+	<h1>Abstract of Findings</h1>
+	<p>This application has been designed to function correctly, but it has trusted user-input to be concise and correct in order to do so. It has no intentions to protect against malicious behaviour. By plainly displaying my inputs on its index page, it is possible to load various scripts to disrupt the application's functioning. I managed to display alerts, load pictures instead of usernames, and momentarily crash the website with a bash script attack by abusing this principle.</p>
+
+	<h1>Issues Found</h1>
+	<h2>Issue 1: Loading an image source as a username</h2>
+	<p>This issue is a cross site scripting issue. I inject an image source as my username.</p>
+	<p>By setting my username to <em>&ltimg src = source_of_image/&gt</em>, I was able to achieve the following result:</p>
+	<img src="images/img_vul.png" alt="Event Poster" height="400" width=auto border="1" />
+	<p>The severity of this scripting issue is MEDIUM, because no data is reached, however the functioning of the program may be compromised.</p>
+	<p>This problem can easily be avoided if the input is sanitised to not allow &lt or &gt signs</p>
+
+	<h1>Conclusion</h1>
+
+	<h1>References</h1>
 </body>
 </html>
