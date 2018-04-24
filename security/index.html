@@ -31,18 +31,38 @@ References - A list of references and links that you used for your work.
 	<p>I have noticed that the username tag could be easily exploited, as the input was not sanitized and not parsed. I discovered many vulnerabilities from the username tag alone, and those will be the only vulnerabilities discussed in this assessment, but expect that this application has many more problems than those listed below. </p>
 	
 	<h1>Abstract of Findings</h1>
-	<p>This application has been designed to function correctly, but it has trusted user-input to be concise and correct in order to do so. It has no intentions to protect against malicious behaviour. By plainly displaying my inputs on its index page, it is possible to load various scripts to disrupt the application's functioning. I managed to display alerts, load pictures instead of usernames, and momentarily crash the website with a bash script attack by abusing this principle.</p>
+	<p>This application has been designed to function correctly, but it has trusted user-input to be concise and correct in order to do so. It has no intentions to protect against malicious behaviour. By plainly displaying my inputs on its index page, it is possible to load various scripts to disrupt the application's functioning, as well as access user information that should otherwise be private. I managed to display alerts, load pictures instead of usernames, access all passenger information from the index page, and momentarily crash the website with a bash script attack by abusing this principle.</p>
 
 	<h1>Issues Found</h1>
-	<h2>Issue 1: Loading an image source as a username</h2>
-	<p>This issue is a cross site scripting issue. I inject an image source as my username.</p>
-	<p>By setting my username to <em>&ltimg src = source_of_image/&gt</em>, I was able to achieve the following result:</p>
-	<img src="images/img_vul.png" alt="Event Poster" height="400" width=auto border="1" />
-	<p>The severity of this scripting issue is MEDIUM, because no data is reached, however the functioning of the program may be compromised.</p>
-	<p>This problem can easily be avoided if the input is sanitised to not allow &lt or &gt signs</p>
+	<h2>Issue 1: Cross Site Scripting</h2>
+	<p>Below is a screenshot from the application's index page, where an image is passed as a username rather than the expected input of a username:</p>
+	<img src="images/img_vul.png" alt="Vulnerability" height="400" width=auto border="1" />
+	<p>The severity of cross site scripting is HIGH, because malicious scripts could be injected to steal user data and access cookies from browsers. In this example, I only displayed an img source as the username, but I easily could've injected more complicated scripts that could completely disfunction the application and steal user information.</p>
+	<p>This problem can be avoided if the input is sanitised. Upon looking at the source code, I see that on line 64 the username input is plainly accepted, not checking for any malicious intentions.</p>
+	<p>Line 64: var username = request.body.username;</p>
+
+	<h2>Issue 2: Privacy</h2>
+	<p>This issue is about user privacy. The home page lists all passenger data with sensitive information such as their username tag, their location, and their timestamp of using the app.</p>
+	<p>You can see a screenshot of data that I easily accessed from the main page:</p>
+	<img src="images/privacy_vul.png" alt="Vulnerability" height="400" width=auto border="1" />
+	<p>The severity of this scripting issue is MEDIUM, because user-data can be stolen and users can be easily tracked with the location data publicly displayed.</p>
+	<p>This problem can be avoided by making user-data to be not publicly accessible.</p>
+
+	<h2>Issue 3: Denial-Of-Service Attack</h2>
+	<p>This issue concerns the upkeep of the application. The server makes no checks or takes no precautions to prevent a denial-of-service attack, which is a "cyber-attack in which the perpetrator seeks to make a machine or network resource unavailable to its intended users by temporarily or indefinitely disrupting services of a host connected to the Internet" (Wikipedia).</p>
+	<p>I wrote the following BASH script from Mac Automator that sent a ride request with a random username hundreds of times a second:</p>
+	<img src="images/bash_vul_3.png" alt="Vulnerability" height="600" width=auto border="1" />
+	<p>This is the result from the application after running the script for a few seconds, and please mind that the server was unresponsive for a couple minutes before the web page was back up:</p>
+	<img src="images/bash_vul_1.png" alt="Vulnerability" height="600" width=auto border="1" />
+	<img src="images/bash_vul_2.png" alt="Vulnerability" height="600" width=auto border="1" />
+	<p>The severity of this scripting issue is LOW (but potentially HIGH!), because the attack needs to be severely powerful to take down this application, which in its current state should not be of concern to such powerful attacks.</p>
+	<p>This problem can be avoided by working with companies that work with DOS protection for your website. Consider limiting the amount of user-input allowed from a single machine to make yourself less prone to these attacks.</p>
 
 	<h1>Conclusion</h1>
+	<p>This application in its current state is unfortunately prone to many attacks and those with malicious intentions can easily steal and manipulate user-data. I would advise starting by sanitising user input, and making user-data private to solve many of the bigger problems. For the rest, I would advise working with a web developer proficient in web security in order to rebuild the application to be less prone to such attacks.</p>
 
 	<h1>References</h1>
+	<p>My only reference for this report has been Mr. Chow's COMP20 classes from Tufts University.</p>
+	<p>For the definition of a DOS attack, I have referenced <em>https://en.wikipedia.org/wiki/Denial-of-service_attack</em></p>
 </body>
 </html>
