@@ -1,5 +1,5 @@
 # comp20-rsalhon
-<h1>What is this purpose of this Git repository?</h1>
+<h2>What is this purpose of this Git repository?</h2>
 test
 
 
